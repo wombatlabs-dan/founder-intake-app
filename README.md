@@ -1,6 +1,6 @@
 # Founder Intake App
 
-A Flask-based AI chat prototype for conducting structured intake conversations with business leaders.
+A Flask-based AI chat prototype for conducting structured intake conversations with startup founders.
 
 ## What It Does
 
@@ -11,28 +11,53 @@ A Flask-based AI chat prototype for conducting structured intake conversations w
 
 ## Setup
 
-1. Set your Anthropic API key:
-   ```bash
-   export ANTHROPIC_API_KEY="sk-ant-api03-..."
-   ```
+### 1. Clone the repo
 
-2. Run the server:
-   ```bash
-   source venv/bin/activate
-   python3 server.py
-   ```
+```bash
+git clone https://github.com/wombatlabs-dan/founder-intake-app.git
+cd founder-intake-app
+```
 
-3. Open http://127.0.0.1:5000 in your browser
+### 2. Create and activate a virtual environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set your OpenAI API key
+
+```bash
+export OPENAI_API_KEY="sk-proj-..."
+```
+
+### 5. Run the server
+
+```bash
+python3 server.py
+```
+
+### 6. Open the app
+
+Go to `http://127.0.0.1:5000` in your browser.
+
+---
 
 ## Project Structure
 
 ```
 founder-intake-app/
-├── server.py              # Flask app + LLM integration
+├── server.py              # Flask + OpenAI + RAG loader
 ├── templates/
 │   └── index.html         # Chat UI
 ├── rag_files/
-│   └── founder-intake-rag.txt   # RAG context (loaded server-side)
+│   └── founder-intake-rag.txt   # RAG context (server-side)
 ├── requirements.txt
 └── README.md
 ```
@@ -41,7 +66,7 @@ founder-intake-app/
 
 - ✅ Flask "Hello World" server
 - ✅ Text input + echo (via LLM)
-- ✅ LLM call (Claude Haiku)
+- ✅ LLM call (OpenAI GPT-4o-mini)
 - ✅ RAG file loaded from backend directory
 - ✅ Prompt template with system instructions
 - ✅ Clean UI with Quicksand font, #149911 buttons
