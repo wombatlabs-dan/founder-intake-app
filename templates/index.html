@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder Intake</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #ffffff;
+            color: #424342;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        header h1 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #149911;
+        }
+        #chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .user-message {
+            align-self: flex-end;
+            background: #e8f5e8;
+            color: #424342;
+            font-weight: 600;
+        }
+        .ai-message {
+            align-self: flex-start;
+            background: #f5f5f5;
+            color: #424342;
+        }
+        .input-bar {
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+            padding: 12px 20px 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #user-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 24px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        #user-input:focus {
+            border-color: #149911;
+        }
+        #submit-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: #149911;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s, background 0.2s;
+        }
+        #submit-btn:hover {
+            background: #0e7a0c;
+            transform: scale(1.05);
+        }
+        #submit-btn:active {
+            transform: scale(0.95);
+        }
+        .loading {
+            opacity: 0.6;
+            font-style: italic;
+        }
+        #toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #149911;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        #toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Founder Intake</h1>
+    </header>
+    <div id="chat-area"></div>
+    <div class="input-bar">
+        <input type="text" id="user-input" placeholder="Tell me about your target user...">
+        <button id="submit-btn">✨</button>
+    </div>
+    <div id="toast">Done!</div>
+
+    <script>
+        const chatArea = document.getElementById('chat-area');
+        const userInput = document.getElementById('user-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const toast = document.getElementById('toast');
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = 'message ' + (isUser ? 'user-message' : 'ai-message');
+            div.textContent = text;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function showLoading() {
+            const div = document.createElement('div');
+            div.className = 'message ai-message loading';
+            div.id = 'loading-msg';
+            div.textContent = 'Thinking...';
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function removeLoading() {
+            const el = document.getElementById('loading-msg');
+            if (el) el.remove();
+        }
+
+        function showToast() {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, true);
+            userInput.value = '';
+            showLoading();
+
+            try {
+                const res = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: text})
+                });
+                const data = await res.json();
+                removeLoading();
+                addMessage(data.reply, false);
+            } catch (err) {
+                removeLoading();
+                addMessage('Oops, something went wrong. Please try again.', false);
+            }
+        }
+
+        submitBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Welcome message
+        addMessage("Hi! I'm here to help you think through your target user. Tell me about who you're building for.", false);
+    </script>
+</body>
+</html>
