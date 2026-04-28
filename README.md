@@ -2,6 +2,8 @@
 
 A Flask-based AI chat prototype for conducting structured intake conversations with startup founders.
 
+Built for a classwork assignment in Greg Nudelman's [UX for AI Certification](https://uxforai.com/) course.
+
 ## What It Does
 
 - Founder describes their target user in natural language
