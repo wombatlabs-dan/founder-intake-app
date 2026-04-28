@@ -1,6 +1,6 @@
 # Founder Intake App
 
-A Flask-based AI chat prototype for conducting structured intake conversations with business leaders.
+A Flask-based AI chat prototype for conducting structured intake conversations with business founders.
 
 Build for a classwork assignment in Greg Nudleman's [UX for AI Certification ](https://uxforai.com/) course.
 
