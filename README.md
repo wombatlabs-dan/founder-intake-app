@@ -2,7 +2,7 @@
 
 A Flask-based AI chat prototype for conducting structured intake conversations with business leaders.
 
-Build for a classwork assignment in Greeg Nudleman's [UX for AI](https://uxforai.com/)Certification course.
+Build for a classwork assignmentin Greg Nudleman's excellent [UX for AI](https://uxforai.com/) Certification course.
 
 ## What It Does
 
