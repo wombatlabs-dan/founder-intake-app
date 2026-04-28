@@ -1,2 +1,2 @@
-flask>=3.0.0
-openai>=1.30.0
+flask>=2.0.0
+openai>=1.0.0
